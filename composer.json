@@ -1,0 +1,19 @@
+{
+  "name": "hikarixd/php-backend",
+  "description": "Hikarixd PHP 8.4 backend with MongoDB Atlas and FrankenPHP",
+  "type": "project",
+  "require": {
+    "php": "^8.4",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-mongodb": "^2.1",
+    "mongodb/mongodb": "^2.1"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "allow-plugins": {}
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
+}

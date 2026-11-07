@@ -1,0 +1,11 @@
+/vendor/
+/.env
+/.env.*
+!/.env.example
+/data/*
+!/data/.gitkeep
+/.vercel/
+/.DS_Store
+*.log
+.phpunit.cache/
+*.bak

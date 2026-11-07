@@ -1,0 +1,10 @@
+.git
+.github
+.vercel
+vendor
+.env
+.env.*
+data/*
+!data/.gitkeep
+node_modules
+*.log

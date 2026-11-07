@@ -1,0 +1,22 @@
+{
+	admin off
+	auto_https off
+	frankenphp {
+	}
+}
+
+# Port dibaca dari $PORT (Vercel memakai 80). Tanpa "bind": Caddy mendengarkan di semua interface.
+:{$PORT:80} {
+	# Document root = hanya aset publik + front controller (public/index.php dibuat oleh Dockerfile).
+	# Folder app/, config/, data/, vendor/, scripts/ berada DI LUAR root ini, jadi tidak bisa diakses via HTTP.
+	root * /app/public
+
+	log
+
+	header X-Content-Type-Options nosniff
+
+	# php_server: file .php dieksekusi oleh FrankenPHP, file statis (css/js/gambar) dilayani dengan MIME yang benar,
+	# dan semua path lain (/, /docs, /api/...) diteruskan ke public/index.php.
+	# Kompresi dibiarkan ke edge Vercel (tidak memakai "encode" di origin).
+	php_server
+}

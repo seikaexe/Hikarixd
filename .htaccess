@@ -1,0 +1,20 @@
+Options -Indexes
+DirectoryIndex index.php index.html
+<IfModule mod_rewrite.c>
+RewriteEngine On
+# API ditangani PHP front controller.
+RewriteRule ^api(?:/.*)?$ api.php [QSA,L]
+# Keep private application files and runtime data inaccessible.
+RewriteRule ^(app|config|data|scripts|server|vendor)(/|$) - [F,L,NC]
+RewriteRule ^(?:composer\.(?:json|lock)|README\.md|\.env|phpunit\.xml|Dockerfile(?:\.vercel)?|Caddyfile|vercel\.json)$ - [F,L,NC]
+# Aset statis tinggal di public/ (URL /styles.css -> public/styles.css).
+RewriteCond %{DOCUMENT_ROOT}/public/$1 -f
+RewriteRule ^([^/]+\.(?:css|js|png|jpe?g|gif|svg|ico|webp|woff2?))$ public/$1 [L]
+# URL bersih (/docs, /health, /apikey): semua yang bukan file/folder -> index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+</IfModule>
+<FilesMatch "^\.">
+  Require all denied
+</FilesMatch>

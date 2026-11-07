@@ -1,0 +1,28 @@
+name: PHP checks
+on:
+  push:
+  pull_request:
+jobs:
+  syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: curl, mongodb
+          coverage: none
+      - name: Guard - public/ hanya aset statis, halaman utama di root
+        run: |
+          if find public -type f \( -iname '*.php' -o -iname '*.phtml' -o -iname '*.html' \) | grep -q .; then
+            echo "public/ tidak boleh berisi .php/.html (Vercel bisa menyajikannya sebagai file unduhan)"; exit 1
+          fi
+          test -f index.html
+          test -f server/index.php
+      - name: PHP syntax
+        run: |
+          find . -path './vendor' -prune -o -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Resolve and validate Composer dependencies
+        run: |
+          composer update --no-interaction --no-progress
+          composer validate --no-check-publish
